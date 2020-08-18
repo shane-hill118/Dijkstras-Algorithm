@@ -1,0 +1,73 @@
+void dij(vector <vector<int>> Graph, int Start)
+{
+	vector <vector<int>> cost(Graph.size(), vector<int>(Graph[0].size()));
+	vector<int> distance(Graph.size());
+	vector<int> pred(Graph.size());
+	vector<int> visited(Graph.size());
+	int num = 0;
+	int count;
+	int min;
+	int	nextnode;
+	for (int i = 0;i < Graph.size();i++)
+	{
+		for (int j = 0;j < Graph.size();j++)
+		{
+			if (Graph[i][j] == 0)
+			{
+				cost[i][j] = 99999;
+			}
+			else
+			{
+				cost[i][j] = Graph[i][j];
+			}
+		}
+	}
+	for (int i = 0;i < Graph.size();i++) 
+	{
+		distance[i] = cost[Start][i];
+		pred[i] = Start;
+		visited[i] = 0;
+	}
+	distance[Start] = 0;
+	visited[Start] = 1;
+	count = 1;
+	while (count < Graph.size() - 1) 
+	{
+		min = 99999;
+		for (int i = 0;i < Graph.size();i++)
+		{
+			if (distance[i] < min && !visited[i])
+			{
+				min = distance[i];
+				nextnode = i;
+			}
+		}
+		visited[nextnode] = 1;
+		for (int i = 0;i < Graph.size();i++)
+		{
+			if (!visited[i])
+			{
+				if (min + cost[nextnode][i] < distance[i])
+				{
+					distance[i] = min + cost[nextnode][i];
+					pred[i] = nextnode;
+				}
+			}
+		}
+		count++;
+	}
+	for (int i = 0;i < Graph.size();i++)
+	{
+		if (i != Start)
+		{
+			cout << "\nDistance of node" << i << "=" << distance[i];
+			cout << "\nPath=" << i;
+			num = i;
+			do 
+			{
+				num = pred[num];
+				cout << "<-" << num;
+			} while (num != Start);
+		}
+	}
+}
